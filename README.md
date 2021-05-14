@@ -69,12 +69,29 @@ First and third base located.
 
 ## Player Tracking:
 
+To begin my player tracking, I created a mask for just the playing field to eliminate the crowd, stands, and dugouts.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImageFieldMask.jpg?raw=true" width="840" height="500" />
+
+I created an additional mask to filter out the oustide dirt/warning track to be used later.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImageGrassMask.jpg?raw=true" width="840" height="500" />
+
+Next, I split the video into a list of frames and applied filters to each. Below is the first frame of the video.
+
+Frame 1
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstFrame.jpg?raw=true" width="840" height="500" />
 
-frame - avg image
+The first technique I used was to 'subtract' the averaged image from the frame which should highlight the moving parts of the frame (players/ball/umpires).
+
+INSERT PICTURE OF THE SUBTRACTED IMAGE
+
+I then applied color filters to the subtracted image, revealing the figures in the frame.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectDefensivePlayers.jpg?raw=true" width="840" height="500" />
+
+Because the catcher, base coaches, and umpires move less during the play, subtracting the average image from the frame is less usefull. As a result, I decided to just use color filters on the frame without subtraction.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectCatcher.jpg?raw=true" width="840" height="500" />
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectOpposingPlayers.jpg?raw=true" width="840" height="500" />
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectUmpires.jpg?raw=true" width="840" height="500" />
@@ -82,17 +99,19 @@ frame - avg image
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectedPoints.jpg?raw=true" width="840" height="500" />
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectedPoints2.jpg?raw=true" width="840" height="500" />
 
-
-Using this averaged image, a white color mask, and Canny/ HoughLinesP, I gathered points along both foul lines. Using the intersection of the two these lines as the location of home plate, I rotated the image about home plate so that both foul lines were at an equal angle from the horizonal. Then, to get the location of second base, I used a white color mask on a vertical slice from home plate. To get the location of first and third base, I rotated the image about home plate twice so that each foul line was horizontal. Then, I placed a horizontal slice of each image (one flipped) onto each other, creating a bright white spot where first/third base was located. This ensured consistency of first/third base location. Finally, using the distance between the spot and home plate, I placed each base along it’s respective foul line. Once I had these locations, I was able to setup a transposition onto the playing field. To do this, I calculated the intersection point between each foul line and the line from first/third base to second base. Then, to transpose any observed point, I drew lines from each ‘origin’ point through the observed point. Using the angle difference between these lines and the foul lines, along with a foot to degree ratio calculated with the 90ft distance between bases, I was able to get the x, y location of any observed point in the video (first base line = x-axis). The transposition was less accurate in the outfield, so I left the non-transposed points in my csv file. As far as image processing, I used a combination of masks to track figures on the field. First, I created a mask for just the playing field to eliminate the crowd, stands, and dugouts. My player detection method revolved around utilizing OpenCV and SimpleBlobDetector. I used a combination of white/dark masks and image subtraction (using the average image from before) on each frame. This resulted in 15-30 points for each frame, which I connected between frames using proximity calculations and gap restrictions. Finally, I filtered out duplicate and choppy tracking paths. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
-
+My player detection method revolved around utilizing OpenCV and SimpleBlobDetector. I used a combination of white/dark masks and image subtraction (using the average image from before) on each frame. This resulted in 15-30 points for each frame, which I connected between frames using proximity calculations and gap restrictions. Finally, I filtered out duplicate and choppy tracking paths. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
 
 
-Results:
+
+## Tracking Results:
 Tracked locations:
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/tracked_gif.gif?raw=true" width="840" height="500" />
 
 
-Transpositions
+## Transposing locations onto the plane of the field
+
+Once I had these locations, I was able to setup a transposition onto the playing field. To do this, I calculated the intersection point between each foul line and the line from first/third base to second base. Then, to transpose any observed point, I drew lines from each ‘origin’ point through the observed point. Using the angle difference between these lines and the foul lines, along with a foot to degree ratio calculated with the 90ft distance between bases, I was able to get the x, y location of any observed point in the video (first base line = x-axis). The transposition was less accurate in the outfield, so I left the non-transposed points in my csv file. 
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationGrid.jpg?raw=true" width="840" height="500" />
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/transposed_gif.gif?raw=true" width="840" height="500" />
