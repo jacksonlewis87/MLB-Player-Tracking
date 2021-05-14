@@ -54,7 +54,7 @@ To get the location of first and third base, I decided to use two splices, one a
 <table>
 <tr><td vlign="center">First base splice</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseSplice.jpg?raw=true" width="840" height="20" /></td></tr>
-<tr><td hlign="center">First base splice flipped</td></tr>
+<tr><td align="center">First base splice flipped</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseSpliceFlipped.jpg?raw=true" width="840" height="20" /></td></tr>
 <tr><td vlign="center">Third base splice</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/thirdBaseSplice.jpg?raw=true" width="840" height="20" /></td></tr>
