@@ -7,6 +7,7 @@ To begin, I averaged all frames of the video to get a clearer view of the blank 
 ![alt text](https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImage.jpg?raw=true)
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImage.jpg?raw=true" width="600" height="400" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/initial_gif.gif?raw=true" width="600" height="400" />
 
 ## Locating field elements:
 
