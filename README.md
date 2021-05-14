@@ -52,13 +52,13 @@ After applying a horizontal and reverse-rotational translation to the point, sec
 To get the location of first and third base, I decided to use two splices, one along each foul line, and average them. To get each splice, I rotated the image so that each foul line was horizontal. Then, after flipping the first base splice along the vertical axis and applying color filters/blurs, I averaged both images to create a bright white spot where first/third base was located. Using this method this ensured consistency of first/third base location.
 
 <table>
-<tr><td vlign="center">First base splice</td></tr>
+<tr><td align="center">First base splice</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseSplice.jpg?raw=true" width="840" height="20" /></td></tr>
 <tr><td align="center">First base splice flipped</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseSpliceFlipped.jpg?raw=true" width="840" height="20" /></td></tr>
-<tr><td vlign="center">Third base splice</td></tr>
+<tr><td align="center">Third base splice</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/thirdBaseSplice.jpg?raw=true" width="840" height="20" /></td></tr>
-<tr><td vlign="center">Combined splice</td></tr>
+<tr><td align="center">Combined splice</td></tr>
 <tr><td vlign="center"><img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstAndThirdAveraged.jpg?raw=true" width="840" height="20" /></td></tr>
 </table>
 
