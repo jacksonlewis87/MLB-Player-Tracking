@@ -9,6 +9,8 @@ To begin, I averaged all frames of the video to get a clearer view of the blank 
 ![alt text](https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImage.jpg?raw=true =250x250)
 
 
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImage.jpg?raw=true" width="200" height="400" />
+
 ## Locating field elements:
 
 ### Foul lines
