@@ -71,6 +71,8 @@ First and third base located.
 
 To begin my player tracking, I created a mask for just the playing field to eliminate the crowd, stands, and dugouts.
 
+INCLUDE METHOD/PHOTOS TO DO THIS (CONTOURS)
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImageFieldMask.jpg?raw=true" width="840" height="500" />
 
 I created an additional mask to filter out the oustide dirt/warning track to be used later.
