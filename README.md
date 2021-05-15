@@ -79,6 +79,8 @@ I created an additional mask to filter out the oustide dirt/warning track to be 
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImageGrassMask.jpg?raw=true" width="840" height="500" />
 
+### Collecting Points
+
 Next, I split the video into a list of frames and applied filters to each. Below is the first frame of the video.
 
 Frame 1
@@ -86,22 +88,36 @@ Frame 1
 
 The first technique I used was to 'subtract' the averaged image from the frame which should highlight the moving parts of the frame (players/ball/umpires).
 
-INSERT PICTURE OF THE SUBTRACTED IMAGE
+Subtracted image
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/frameSubtracted.jpg?raw=true" width="840" height="500" />
 
 I then applied color filters to the subtracted image, revealing the figures in the frame.
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectDefensivePlayers.jpg?raw=true" width="840" height="500" />
 
-Because the catcher, base coaches, and umpires move less during the play, subtracting the average image from the frame is less usefull. As a result, I decided to just use color filters on the frame without subtraction.
+Because the catcher, base coaches, and umpires move less during the play, subtracting the average image from the frame is less usefull. As a result, I decided to just use a series of color filters on the frame without subtraction to detect the other figures on the field.
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectCatcher.jpg?raw=true" width="840" height="500" />
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectOpposingPlayers.jpg?raw=true" width="840" height="500" />
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectUmpires.jpg?raw=true" width="840" height="500" />
+
+Combining these filters and results in this figure mask.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/combinedMasks.jpg?raw=true" width="840" height="500" />
+
+I then used OpenCV's SimpleBlobDetector (with varying parameters) to detect figures in each of the filtered frames. Combining the detected blobs results in 15-30 points per frame.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectedPoints.jpg?raw=true" width="840" height="500" />
+
+As seen here, the first base umpire isn't detected and there are a few duplicate points. This will be accounted for when linking and filtering the points from each frame. For example, another frame from the video results in these detected points.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/detectedPoints2.jpg?raw=true" width="840" height="500" />
 
-My player detection method revolved around utilizing OpenCV and SimpleBlobDetector. I used a combination of white/dark masks and image subtraction (using the average image from before) on each frame. This resulted in 15-30 points for each frame, which I connected between frames using proximity calculations and gap restrictions. Finally, I filtered out duplicate and choppy tracking paths. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
+The first base umpire is detected in this frame.
+
+### Linking Points
+
+This resulted in 15-30 points for each frame, which I connected between frames using proximity calculations and gap restrictions. Finally, I filtered out duplicate and choppy tracking paths. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
 
 
 
