@@ -1,12 +1,12 @@
 # MLB-Player-Tracking - Analysis of MLB game footage with Python and OpenCV
-## Initial video:
+## Initial video
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/initial_gif.gif?raw=true" width="840" height="500" />
 
 To begin, I averaged all frames of the video to get a clearer view of the blank field. While most of the field is clear in the averaged image, locations where players/umpires stand still during the video still appear.
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImage.jpg?raw=true" width="840" height="500" />
 
-## Locating field elements:
+## Locating field elements
 
 ### Foul lines
 
@@ -67,7 +67,7 @@ First and third base located.
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstAndThirdBaseLocated.jpg?raw=true" width="840" height="500" />
 
 
-## Player Tracking:
+## Player Tracking
 
 To begin my player tracking, I created a mask for just the playing field to eliminate the crowd, stands, and dugouts.
 
@@ -119,21 +119,39 @@ The first base umpire is detected in this frame.
 
 Once points are gathered from each frame, they need to be linked together. To do this, I matched points from each frame by the minimum proximity value (difference between x, y, and blob size), creating chains of coordinates in the set of frames. If a chain wasn't close enough to a detected point a blank value was appended to the chain. Any points from a frame that weren't attached to a chain were discarded. After the chains were created, I filtered out any chains that had a long streak of null values, resulting in a set of the most complete chains. I then filtered out any duplicate chains, keeping the 'smoothest' in each case. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
 
-## Tracking Results:
-Tracked locations:
+## Tracking Results
+Tracked locations
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/tracked_gif.gif?raw=true" width="840" height="500" />
 
 ## Transposing locations onto the plane of the field
 
-Once I had these locations, I was able to setup a transposition onto the playing field. To do this, I calculated the intersection point between each foul line and the line from first/third base to second base. Then, to transpose any observed point, I drew lines from each ‘origin’ point through the observed point. Using the angle difference between these lines and the foul lines, along with a foot to degree ratio calculated with the 90ft distance between bases, I was able to get the x, y location of any observed point in the video (first base line = x-axis). The transposition was less accurate in the outfield, so I left the non-transposed points in my csv file. 
+Using the locations of all 4 bases and knowing that the distance between each is 90 ft, I was able to create locate 2 'origin' points at the intersections of foul lines and base lines. These points help to account for the perspective distortion from the camera.
+
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/originPoints.jpg?raw=true" width="840" height="500" />
+
+Next, I formed polynomial equations to calculate the distance from home plate along each foul line. I used three points for each equation: home plate, first/third base, and the outfield wall, all of which are known distances (at Yankee Stadium, the right and left field wall distances are 314 ft and 318 ft, respectively).
+
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseLineGraph.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/thirdBaseLineGraph.jpg?raw=true" width="840" height="500" />
+
+Having both the origin points and the distance equations for each side of the field, I can now place any point from the video onto the plane of the field. For example, lets look at the second baseman from the first frame of the video.
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample1.jpg?raw=true" width="840" height="500" />
+
+To begin, I drew a line from each origin through the tracked point and onto the opposite foul line.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample2.JPG?raw=true" width="840" height="345" />
+
+I then inputed the horizontal pixel index of foul line intersection points into their respective polynomial equations to determine the players location in relation to home plate.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample3.png?raw=true" width="840" height="500" />
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample4.png?raw=true" width="840" height="500" />
+
+This results in the x, y coordinate (first base line = x-axis) of the player on the plane of the field.
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample5.jpg?raw=true" width="840" height="500" />
 
-FIX TRANSPOSED GIF
+## Transposed Results
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/transposed_gif.gif?raw=true" width="840" height="500" />
 
 
