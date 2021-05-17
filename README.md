@@ -117,21 +117,23 @@ The first base umpire is detected in this frame.
 
 ### Linking Points
 
-This resulted in 15-30 points for each frame, which I connected between frames using proximity calculations and gap restrictions. Finally, I filtered out duplicate and choppy tracking paths. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
-
-
+Once points are gathered from each frame, they need to be linked together. To do this, I matched points from each frame by the minimum proximity value (difference between x, y, and blob size), creating chains of coordinates in the set of frames. If a chain wasn't close enough to a detected point a blank value was appended to the chain. Any points from a frame that weren't attached to a chain were discarded. After the chains were created, I filtered out any chains that had a long streak of null values, resulting in a set of the most complete chains. I then filtered out any duplicate chains, keeping the 'smoothest' in each case. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
 
 ## Tracking Results:
 Tracked locations:
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/tracked_gif.gif?raw=true" width="840" height="500" />
 
-
 ## Transposing locations onto the plane of the field
 
 Once I had these locations, I was able to setup a transposition onto the playing field. To do this, I calculated the intersection point between each foul line and the line from first/third base to second base. Then, to transpose any observed point, I drew lines from each ‘origin’ point through the observed point. Using the angle difference between these lines and the foul lines, along with a foot to degree ratio calculated with the 90ft distance between bases, I was able to get the x, y location of any observed point in the video (first base line = x-axis). The transposition was less accurate in the outfield, so I left the non-transposed points in my csv file. 
 
-<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationGrid.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample1.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample2.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample3.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample4.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample5.jpg?raw=true" width="840" height="500" />
 
+FIX TRANSPOSED GIF
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/transposed_gif.gif?raw=true" width="840" height="500" />
 
 
