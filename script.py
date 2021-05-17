@@ -151,19 +151,43 @@ def getIntersectionOfLines(line1, line2):
     return (x, y)
 
 
+def setupTransformation(mask):
+    maxX = 0
+    minX = 10000
+    for i in range(len(fieldMask)):
+        for j in range(len(fieldMask[i])):
+            if fieldMask[i][j] == 255:
+                maxX = max(maxX, j)
+                minX = min(minX, j)
+
+    rPoly = np.polyfit([homePlateLoc[0], firstBaseLoc[0], maxX], [0, 90, RIGHTFIELDLENGTH], 2)
+    lPoly = np.polyfit([homePlateLoc[0], thirdBaseLoc[0], minX], [0, 90, LEFTFIELDLENGTH], 2)
+    return [maxX, minX, rPoly, lPoly]
+
+
 def transformCameraPoint(x, y):
     point = getIntersectionOfLines([homePlateX, homePlateY, firstBaseLoc[0], firstBaseLoc[1]], [lOrigin[0], lOrigin[1], x, y])
-    firstBaseFoulLinePoint = lDegreeLength * angleBetweenVectors(point[0], point[1], homePlateX, homePlateY, lOrigin[0], lOrigin[1])
-    if angleBetweenVectors(point[0], point[1], lOrigin[0], lOrigin[1] + 100, lOrigin[0], lOrigin[1]) < angleBetweenVectors(homePlateX, homePlateY, lOrigin[0], lOrigin[1] + 100, lOrigin[0], lOrigin[1]):
-        firstBaseFoulLinePoint = firstBaseFoulLinePoint * -1
+    multiplyer = 1.0
+    if point[0] < homePlateX:
+        point = (homePlateX + (homePlateX - point[0]), 0)
+        multiplyer = -1.0
+    firstBaseFoulLinePoint = ((RIGHTPOLY[0] * pow(point[0], 2)) + (RIGHTPOLY[1] * point[0]) + RIGHTPOLY[2]) * multiplyer
     point = getIntersectionOfLines([homePlateX, homePlateY, thirdBaseLoc[0], thirdBaseLoc[1]], [rOrigin[0], rOrigin[1], x, y])
-    thirdBaseFoulLinePoint = rDegreeLength * angleBetweenVectors(point[0], point[1], homePlateX, homePlateY, rOrigin[0], rOrigin[1])
-    if angleBetweenVectors(point[0], point[1], rOrigin[0], rOrigin[1] + 100, rOrigin[0], rOrigin[1]) < angleBetweenVectors(homePlateX, homePlateY, rOrigin[0], rOrigin[1] + 100, rOrigin[0], rOrigin[1]):
-        thirdBaseFoulLinePoint = thirdBaseFoulLinePoint * -1
+    multiplyer = 1.0
+    if point[0] > homePlateX:
+        point = (homePlateX - (point[0] - homePlateX), 0)
+        multiplyer = -1.0
+    thirdBaseFoulLinePoint = ((LEFTPOLY[0] * pow(point[0], 2)) + (LEFTPOLY[1] * point[0]) + LEFTPOLY[2]) * multiplyer
     return (firstBaseFoulLinePoint, thirdBaseFoulLinePoint)
 
 
 videoFileName = 'video.mp4'
+RIGHTFIELDLENGTH = 314 # Yankee Stadium right field distance
+LEFTFIELDLENGTH = 318 # Yankee Stadium left field distance
+RIGHTFIELDENDX = 0
+LEFTFIELDENDX = 0
+RIGHTPOLY = None
+LEFTPOLY = None
 
 # Create average image
 video = cv2.VideoCapture(videoFileName)
@@ -263,6 +287,8 @@ maxFieldContour = max(fieldContours, key=cv2.contourArea)
 fieldContourMask = np.ones(avgImage.shape[:2], dtype="uint8") * 255
 cv2.drawContours(fieldContourMask, [maxFieldContour], -1, 0, -1)
 inverseFieldContourMask = 255 - fieldContourMask
+
+[RIGHTFIELDLENGTH, LEFTFIELDLENGTH, RIGHTPOLY, LEFTPOLY] = setupTransformation(fieldMask)
 
 # No outside dirt/warning track
 grassMask = cv2.inRange(avgHLS, np.array([36, 0, 0]), np.array([86, 255, 255]))

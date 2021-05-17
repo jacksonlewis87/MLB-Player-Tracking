@@ -2,7 +2,7 @@
 ## Initial video
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/initial_gif.gif?raw=true" width="840" height="500" />
 
-To begin, I averaged all frames of the video to get a clearer view of the blank field. While most of the field is clear in the averaged image, locations where players/umpires stand still during the video still appear.
+To begin, I averaged all frames of the video to get a clearer view of the blank field. While most of the field is clear in the averaged image, locations where players/umpires stand still during the video still appear. This will make player tracking a bit more difficult, creating the need for multiple techniques in order to achieve accurate results.
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImage.jpg?raw=true" width="840" height="500" />
 
@@ -10,7 +10,7 @@ To begin, I averaged all frames of the video to get a clearer view of the blank 
 
 ### Foul lines
 
-First, I focused on finding both foul lines, as they are essential to accurately locating all 4 bases. To do this, I used a combination of a white color mask and OpenCV's Canny/HoughLinesP functions, which detects lines in a photo.
+First, I focused on finding both foul lines, as they are essential to accurately locating all 4 bases. To do this, I used a combination of a white color mask and OpenCV's Canny/HoughLinesP functions, which detect lines in a photo.
 
 #### Masked
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/foulLineMask.jpg?raw=true" width="840" height="500" />
@@ -71,8 +71,6 @@ First and third base located.
 
 To begin my player tracking, I created a mask for just the playing field to eliminate the crowd, stands, and dugouts.
 
-INCLUDE METHOD/PHOTOS TO DO THIS (CONTOURS)
-
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/avgImageFieldMask.jpg?raw=true" width="840" height="500" />
 
 I created an additional mask to filter out the oustide dirt/warning track to be used later.
@@ -117,7 +115,7 @@ The first base umpire is detected in this frame.
 
 ### Linking Points
 
-Once points are gathered from each frame, they need to be linked together. To do this, I matched points from each frame by the minimum proximity value (difference between x, y, and blob size), creating chains of coordinates in the set of frames. If a chain wasn't close enough to a detected point a blank value was appended to the chain. Any points from a frame that weren't attached to a chain were discarded. After the chains were created, I filtered out any chains that had a long streak of null values, resulting in a set of the most complete chains. I then filtered out any duplicate chains, keeping the 'smoothest' in each case. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
+Once points are gathered from each frame, they need to be linked together. To do this, I matched points from each frame by the minimum proximity value (difference between x, y, and blob size), creating chains of coordinates in the set of frames. If a chain wasn't close enough to a detected point, a blank value was appended to the chain. Any points from a frame that weren't attached to a chain were then discarded. After the chains were created, I filtered out any chains that had a long streak of null values, resulting in a set of the most complete chains. I then filtered out any duplicate chains, keeping the 'smoothest' in each case. This resulted in a location dataset for every offensive and defensive player, umpire, and base.
 
 ## Tracking Results
 Tracked locations
@@ -138,7 +136,7 @@ Having both the origin points and the distance equations for each side of the fi
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample1.jpg?raw=true" width="840" height="500" />
 
-To begin, I drew a line from each origin through the tracked point and onto the opposite foul line.
+To begin, I draw a line from each origin through the tracked point and onto the opposite foul line.
 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample2.JPG?raw=true" width="840" height="345" />
 
@@ -152,6 +150,7 @@ This results in the x, y coordinate (first base line = x-axis) of the player on 
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/transformationExample5.jpg?raw=true" width="840" height="500" />
 
 ## Transposed Results
+
+Applying this transposition method to each player and frame of the video produces this result:
+
 <img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/gifs/transposed_gif.gif?raw=true" width="840" height="500" />
-
-
