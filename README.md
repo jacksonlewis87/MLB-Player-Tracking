@@ -127,12 +127,12 @@ Tracked locations
 
 Using the locations of all 4 bases and knowing that the distance between each is 90 ft, I was able to create locate 2 'origin' points at the intersections of foul lines and base lines. These points help to account for the perspective distortion from the camera.
 
-<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/originPoints.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/originPoints.jpg?raw=true" width="840" height="345" />
 
 Next, I formed polynomial equations to calculate the distance from home plate along each foul line. I used three points for each equation: home plate, first/third base, and the outfield wall, all of which are known distances (at Yankee Stadium, the right and left field wall distances are 314 ft and 318 ft, respectively).
 
-<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseLineGraph.jpg?raw=true" width="840" height="500" />
-<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/thirdBaseLineGraph.jpg?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/firstBaseLineGraph.JPG?raw=true" width="840" height="500" />
+<img src="https://github.com/jacksonlewis87/MLB-Player-Tracking/blob/inital_upload/media/images/thirdBaseLineGraph.JPG?raw=true" width="840" height="500" />
 
 Having both the origin points and the distance equations for each side of the field, I can now place any point from the video onto the plane of the field. For example, lets look at the second baseman from the first frame of the video.
 
